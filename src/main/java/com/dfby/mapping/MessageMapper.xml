@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dfby.dao.MessageMapper" >
+
+  <resultMap id="BaseResultMap" type="com.dfby.domain.Message" >
+    <id column="message_id" property="messageId" jdbcType="INTEGER" />
+    <result column="message_title" property="messageTitle" jdbcType="VARCHAR" />
+    <result column="message_content" property="messageContent" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="CHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    message_id, message_title, message_content, user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_message
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dfby.domain.Message" >
+    insert into t_message (message_id, message_title, message_content, 
+      user_id)
+    values (#{messageId,jdbcType=INTEGER}, #{messageTitle,jdbcType=VARCHAR}, #{messageContent,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dfby.domain.Message" >
+    insert into t_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        message_id,
+      </if>
+      <if test="messageTitle != null" >
+        message_title,
+      </if>
+      <if test="messageContent != null" >
+        message_content,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="messageTitle != null" >
+        #{messageTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="messageContent != null" >
+        #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dfby.domain.Message" >
+    update t_message
+    <set >
+      <if test="messageTitle != null" >
+        message_title = #{messageTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="messageContent != null" >
+        message_content = #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=CHAR},
+      </if>
+    </set>
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dfby.domain.Message" >
+    update t_message
+    set message_title = #{messageTitle,jdbcType=VARCHAR},
+      message_content = #{messageContent,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=CHAR}
+    where message_id = #{messageId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 配置多对一 -->
+  
+  
+  
+
+  
+   <resultMap id="BaseResultMap2" type="com.dfby.domain.Message" >
+	    <id column="message_id" property="messageId" jdbcType="INTEGER" />
+	    <result column="message_title" property="messageTitle" jdbcType="VARCHAR" />
+	    <result column="message_content" property="messageContent" jdbcType="VARCHAR" />
+	    <result column="user_id" property="userId" jdbcType="CHAR" />
+	    <association property="user" select="com.dfby.dao.UserMapper.selectByPrimaryKey" column="user_id" javaType="com.dfby.domain.User">
+		<!-- 这里要注意的是column对应的是student中的外键，而且需是表字段名 -->
+		</association>
+  </resultMap>
+  
+  
+      <select id="getAllMessage2" resultMap="BaseResultMap2">
+        select message_id, message_title, message_content, user_id from t_message
+    </select>
+  
+  
+  
+</mapper>

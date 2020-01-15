@@ -1,0 +1,23 @@
+package com.dfby.dao;
+
+import java.util.List;
+
+import com.dfby.domain.User;
+
+public interface UserMapper {
+    int deleteByPrimaryKey(String userId);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    User selectByPrimaryKey(String userId);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+    
+    List<User> getAllUser();
+    
+    List<User> getAllUser2();
+}
